@@ -1,13 +1,10 @@
-const forms = () => {
-	const form = document.querySelectorAll('.form'),
-		inputs = document.querySelectorAll('input'),
-		phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+import checkNumInputs from './checkNumInputs'
 
-	phoneInputs.forEach(item => {
-		item.addEventListener('input', () => {
-			item.value = item.value.replace(/\D/, '');
-		});
-	});
+const forms = (state) => {
+	const form = document.querySelectorAll('.form'),
+		inputs = document.querySelectorAll('input');
+
+	checkNumInputs('input[name="user_phone"]');
 
 	const message = {
 		loading: 'Загрузка...',
@@ -41,6 +38,12 @@ const forms = () => {
 
 			const formData = new FormData(item);
 
+			if (item.getAttribute('data-calc') === "end") {
+				for (let key in state) {
+					formData.append(key, state[key]);
+				}
+			}
+
 			postData('assets/server.php', formData)
 				.then(res => {
 					console.log(res);
@@ -51,7 +54,11 @@ const forms = () => {
 					clearInputs();
 					setTimeout(() => {
 						statusMessage.remove()
-					}, 5000);
+						document.querySelectorAll('[data-modal]').forEach(item => {
+							item.style.display = 'none';
+						});
+						document.body.style.overflow = '';
+					}, 4000);
 				});
 		});
 	});
