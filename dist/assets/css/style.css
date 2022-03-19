@@ -862,6 +862,11 @@ textarea:focus {
 
 }
 
+.popup_image {
+  width: 80%;
+  max-width: 800px;
+}
+
 .popup_content,
 .popup_engineer_content,
 .popup_calc_end_content {
